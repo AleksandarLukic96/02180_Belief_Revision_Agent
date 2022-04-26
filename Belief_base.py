@@ -11,13 +11,13 @@ class belief_base:
         sentence = sentence.replace(' ', '')
         sentence = simplify(sentence)
         CNF = to_CNF(sentence)
+        new_CNF = []
         if DPLL_satisfiable([x[i] for x in self.CNF for i in range(len(x))], CNF):
             self.base.append([sentence, score])
             for i in range(len(CNF)):
-                if is_tautology(CNF[i]):
-                    CNF.remove(CNF[i])
-                CNF[i] = remove_duplicates(CNF[i])
-            self.CNF.append(CNF)
+                if not is_tautology(CNF[i]):
+                    new_CNF.append(remove_duplicates(CNF[i]))
+            self.CNF.append(new_CNF)
         else:
             print('Sentence {} is incompatible with what is in the belief base'.format(sentence))
 

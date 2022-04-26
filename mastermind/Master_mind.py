@@ -5,17 +5,17 @@ from Feedback import generate_feedback, feedback_to_logic
 
 
 
-solution = ['y', 'r', 'g']
+solution = ['r', 'r', 'g']
 
-colors=['r', 'g', 'b', 'y']
+colors=['r', 'g', 'y']
 fields = len(solution)
 
 rules = []
 for i in range(1, fields+1):
-    rules.append('|'.join(list(map('_'.join,list(itertools.product(*[colors, [str(i)]]))))))
+    rules.append('|'.join(list(map('_'.join, list(itertools.product(*[colors, [str(i)]]))))))
     rule = ''
     for j in range(len(colors)):
-        temp = list(map('_'.join,list(itertools.product(*[colors[:j] + colors[j+1:], [str(i)]]))))
+        temp = list(map('_'.join, list(itertools.product(*[colors[:j] + colors[j+1:], [str(i)]]))))
         temp = ['-' + x for x in temp]
         rule += '&(' + '|'.join(temp) + ')'
     rules.append(rule[1:])

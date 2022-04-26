@@ -74,6 +74,7 @@ def feedback_to_logic(guess, feedback):
             outer.append(s2)
     return '|'.join(outer)
 
+
 def simplify_feedback(feedback):
     parts = divide_sentence(feedback)
     new_parts = []
@@ -124,10 +125,3 @@ def simplify_feedback(feedback):
 def remove_duplicates_and(sentence):
     parts = ['('+part+')' for part in divide_sentence(sentence) if part != '&']
     return '&'.join(list(set(parts)))
-
-if __name__ == '__main__':
-    feedback = '((r_1&-s_2&-y_3&-y_4)&((((s_3|s_4)&(y_2|y_4))&(-y_2&-y_3))|(((s_3|s_4)&(y_2|y_3))&(-y_2&-y_4))|(((y_2|y_4)&(s_3|s_4))&(-y_2&-y_3))|(((y_2|y_4)&(y_2|y_3))&(-s_3&-s_4))|(((y_2|y_3)&(s_3|s_4))&(-y_2&-y_4))|(((y_2|y_3)&(y_2|y_4))&(-s_3&-s_4))))|((s_2&-r_1&-y_3&-y_4)&((((r_3|r_4)&(y_1|y_4))&(-y_1&-y_3))|(((r_3|r_4)&(y_1|y_3))&(-y_1&-y_4))|(((y_1|y_4)&(r_3|r_4))&(-y_1&-y_3))|(((y_1|y_4)&(y_1|y_3))&(-r_3&-r_4))|(((y_1|y_3)&(r_3|r_4))&(-y_1&-y_4))|(((y_1|y_3)&(y_1|y_4))&(-r_3&-r_4))))|((y_3&-r_1&-s_2&-y_4)&((((r_2|r_4)&(s_1|s_4))&(-y_1&-y_2))|(((r_2|r_4)&(y_1|y_2))&(-s_1&-s_4))|(((s_1|s_4)&(r_2|r_4))&(-y_1&-y_2))|(((s_1|s_4)&(y_1|y_2))&(-r_2&-r_4))|(((y_1|y_2)&(r_2|r_4))&(-s_1&-s_4))|(((y_1|y_2)&(s_1|s_4))&(-r_2&-r_4))))|((y_4&-r_1&-s_2&-y_3)&((((r_2|r_3)&(s_1|s_3))&(-y_1&-y_2))|(((r_2|r_3)&(y_1|y_2))&(-s_1&-s_3))|(((s_1|s_3)&(r_2|r_3))&(-y_1&-y_2))|(((s_1|s_3)&(y_1|y_2))&(-r_2&-r_3))|(((y_1|y_2)&(r_2|r_3))&(-s_1&-s_3))|(((y_1|y_2)&(s_1|s_3))&(-r_2&-r_3))))'
-    new_feedback=simplify(simplify_feedback(feedback))
-    print(list(distribute('(-s_4&y_2&-s_3)|(-s_4&(y_2|y_3)&(y_2|y_4)&-s_3)')))
-    x=belief_base()
-    x.add(new_feedback,100)
