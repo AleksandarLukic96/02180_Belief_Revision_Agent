@@ -4,7 +4,6 @@ import random
 from Feedback import generate_feedback, feedback_to_logic
 
 
-
 solution = ['r', 'r', 'g']
 
 colors=['r', 'g', 'y']

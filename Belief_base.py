@@ -48,7 +48,7 @@ class belief_base:
             return
 
         for i in range(1, len(self.base)+1):
-            remove = sorted(list(combinations(list(range(len(self.base))), i)), key=lambda x: tuple([self.base[x[-y]][1] for y in range(1, i+1)]))
+            remove = sorted(list(combinations(list(range(len(self.base))), i)), key=lambda x: tuple([int(self.base[x[y]][1]) for y in range(i)]))
             for set in remove:
                 new_base = [self.CNF[x][i] for x in range(len(self.base)) if x not in set for i in range(len(self.CNF[x]))]
                 if not entails(new_base, sentence):
