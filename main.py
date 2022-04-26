@@ -1,5 +1,5 @@
 from Belief_base import *
-from utils import  *
+from utils import *
 
 if __name__ == "__main__":
 
@@ -7,22 +7,25 @@ if __name__ == "__main__":
     print("Type \'exit\' to exit")
     print("Type \'CREATE {NAME}\' to create a belief base with name {NAME}")
     print("Type \'PRINT {NAME}\' to print belief base with name {NAME}")
-    print("Type \'EXPAND {NAME} {SENTENCE}\' to expand a belief base with name {NAME} with a sentence {SENTENCE}")
+    print("Type \'EXPAND {NAME} {SENTENCE} {WEIGHT}\' to expand a belief base with name {NAME} with a sentence {SENTENCE} of weight {WEIGHT}")
     print("Type \'CONTRACT {NAME} {SENTENCE}\' to contract a belief base with name {NAME} with a sentence {SENTENCE}")
-    print("Type \'REVISION {NAME} {SENTENCE}\' to revise a belief base with name {NAME} with a sentence {SENTENCE}")
+    print("Type \'REVISION {NAME} {SENTENCE} {WEIGHT}\' to revise a belief base with name {NAME} with a sentence {SENTENCE} of weight {WEIGHT}")
 
     print("")
-    print("Type \'ENTAILS {NAME} {SENTENCE}\' to check wether the belief base with name {NAME} entails the sentence {SENTENCE}")
-    print("Type \'SATISFIES {NAME} {SENTENCE}\' to check wether the belief base with name {NAME} satisfies the sentence {SENTENCE}")
+    print(
+        "Type \'ENTAILS {NAME} {SENTENCE}\' to check wether the belief base with name {NAME} entails the sentence {SENTENCE}")
+    print(
+        "Type \'SATISFIES {NAME} {SENTENCE}\' to check wether the belief base with name {NAME} satisfies the sentence {SENTENCE}")
 
-    print("\nType \'MASTER MIND {COLORS} {PATTERN LENGTH}\' to play master mind with {COLORS} different colors and pattern length of {PATTERN LENGTH}")
+    print(
+        "\nType \'MASTER MIND {COLORS} {PATTERN LENGTH}\' to play master mind with {COLORS} different colors and pattern length of {PATTERN LENGTH}")
 
-
-    priority_weight = 1
+    #priority_weight = 1
     while True:
         user_input = input("Your input: ")
 
-        input_words=user_input.split()
+        input_words = user_input.split()
+        words = len(input_words)
 
         if len(input_words) == 0:
             print(input_words)
@@ -31,25 +34,27 @@ if __name__ == "__main__":
             print("Thanks for playing")
             break
 
-        elif input_words[0].upper() == "CREATE":
+        elif input_words[0].upper() == "CREATE" and words == 2:
             globals()[user_input.split()[1]] = belief_base()
 
-        elif input_words[0].upper() == "EXPAND":
+        elif input_words[0].upper() == "EXPAND" and words == 4:
             name = input_words[1]
             sentence = input_words[2]
-            globals()[name].add(sentence,priority_weight)
+            priority_weight = input_words[3]
+            globals()[name].add(sentence, priority_weight)
 
-        elif input_words[0].upper() == "CONTRACT":
+        elif input_words[0].upper() == "CONTRACT" and words == 3:
             name = input_words[1]
             sentence = input_words[2]
             globals()[name].contract(sentence)
 
-        elif input_words[0].upper() == "REVISION":
+        elif input_words[0].upper() == "REVISION" and words == 4:
             name = input_words[1]
             sentence = input_words[2]
-            globals()[name].revision(sentence,priority_weight)
+            priority_weight = input_words[3]
+            globals()[name].revision(sentence, priority_weight)
 
-        elif input_words[0].upper() == "ENTAILS":
+        elif input_words[0].upper() == "ENTAILS" and words == 3:
             name = input_words[1]
             sentence = input_words[2]
             not_helper = "DOES NOT entail"
@@ -57,7 +62,7 @@ if __name__ == "__main__":
                 not_helper = "entails"
             print(f"The belief base: {name} {not_helper} the sentence: {sentence}")
 
-        elif input_words[0].upper() == "SATISFIES":
+        elif input_words[0].upper() == "SATISFIES" and words == 3:
             name = input_words[1]
             sentence = input_words[2]
             not_helper = "DOES NOT satisfy"
@@ -65,13 +70,13 @@ if __name__ == "__main__":
                 not_helper = "satisfy"
             print(f"The belief base: {name} {not_helper} the sentence: {sentence}")
 
-        elif input_words[0].upper() == "PRINT":
+        elif input_words[0].upper() == "PRINT" and words == 2:
             name = input_words[1]
             globals()[name].print()
 
         elif user_input.upper() == "MASTER MIND":
             print("Not yet implemented")
-            #TODO Implement
+            # TODO Implement
 
         else:
             print(f"No match for: \"{user_input}\"")
