@@ -499,3 +499,11 @@ def combinations(*parts):
                 if new_j == -1:
                     break
                 j = new_j
+
+
+def entails(base, sentence):
+    return not satisfiable(base, '-(' + sentence+')')
+
+
+def satisfiable(base, sentence):
+    return DPLL_satisfiable(base, to_CNF(sentence))

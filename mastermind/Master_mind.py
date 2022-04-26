@@ -14,6 +14,7 @@ rules = []
 for i in range(1, fields+1):
     rules.append('|'.join(list(map('_'.join, list(itertools.product(*[colors, [str(i)]]))))))
     rule = ''
+    # TODO: handle only two colors
     for j in range(len(colors)):
         temp = list(map('_'.join, list(itertools.product(*[colors[:j] + colors[j+1:], [str(i)]]))))
         temp = ['-' + x for x in temp]

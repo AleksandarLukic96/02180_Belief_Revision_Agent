@@ -1,5 +1,5 @@
 from utils import *
-
+from itertools import combinations
 
 class belief_base:
 
@@ -22,10 +22,10 @@ class belief_base:
             print('Sentence {} is incompatible with what is in the belief base'.format(sentence))
 
     def satisfiable(self, sentence):
-        return DPLL_satisfiable([x[i] for x in self.CNF for i in range(len(x))], to_CNF(sentence))
+        return satisfiable([self.CNF[x][i] for x in range(len(self.base)) for i in range(len(self.CNF[x]))], sentence)
 
     def entails(self, sentence):
-        return not self.satisfiable('-'+sentence)
+        return not satisfiable([self.CNF[x][i] for x in range(len(self.base)) for i in range(len(self.CNF[x]))], '-(' + sentence+')')
 
     def print(self):
         if len(self.base) == 0:
@@ -43,4 +43,19 @@ class belief_base:
                 for element in belief:
                     print('{:<{padding}} | {}'.format(element, self.base[i][1], padding=padding))
 
+    def contract(self, sentence):
+        for i in range(1, len(self.base)):
+            remove = sorted(list(combinations(list(range(len(self.base))), i)), key=lambda x: tuple([self.base[x[-y]][1] for y in range(1, i+1)]))
+            for set in remove:
+                new_base = [self.CNF[x][i] for x in range(len(self.base)) if x not in set for i in range(len(self.CNF[x]))]
+                if not entails(new_base, sentence):
+                    for index in sorted(list(set), reverse=True):
+                        print(f'Removes sentence {self.base[index][0]}')
+                        del self.base[index]
+                        del self.CNF[index]
+                    return
+
+    def revision(self, sentence):
+        self.contract('-('+sentence+')')
+        self.add(sentence)
 

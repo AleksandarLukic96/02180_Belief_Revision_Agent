@@ -29,3 +29,6 @@ for i in range(len(test)):
 print('All test passed. Resulting belief base:\n')
 x.print()
 x.add('-S&-M',100)
+x.add(test10[0], 10)
+x.contract('S')
+print(x.entails('S'))
