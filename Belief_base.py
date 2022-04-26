@@ -44,6 +44,9 @@ class belief_base:
                     print('{:<{padding}} | {}'.format(element, self.base[i][1], padding=padding))
 
     def contract(self, sentence):
+        if not entails([self.CNF[x][i] for x in range(len(self.base)) for i in range(len(self.CNF[x]))], sentence):
+            return
+
         for i in range(1, len(self.base)+1):
             remove = sorted(list(combinations(list(range(len(self.base))), i)), key=lambda x: tuple([self.base[x[-y]][1] for y in range(1, i+1)]))
             for set in remove:
@@ -55,7 +58,7 @@ class belief_base:
                         del self.CNF[index]
                     return
 
-    def revision(self, sentence):
+    def revision(self, sentence, score):
         self.contract('-('+sentence+')')
-        self.add(sentence)
+        self.add(sentence, score)
 

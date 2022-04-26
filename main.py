@@ -47,7 +47,7 @@ if __name__ == "__main__":
         elif input_words[0].upper() == "REVISION":
             name = input_words[1]
             sentence = input_words[2]
-            globals()[name].revision(sentence)
+            globals()[name].revision(sentence,priority_weight)
 
         elif input_words[0].upper() == "ENTAILS":
             name = input_words[1]
