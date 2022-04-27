@@ -1,9 +1,13 @@
+"""
+Functions for generating rules and feedback for the game Mastermind to use with a belief base.
+"""
 import random
 import itertools
-from utils import simplify, divide_sentence, move_negation, is_false, distribute
-from Belief_base import belief_base
+from utils import *
+
 
 def generate_feedback(guess, solution):
+    # Generates the feedback for a given guess with a given solution, used when playing automatically.
     solution = solution.copy()
     guess = guess.split('&')
     guess = [x[0] for x in guess]
@@ -23,6 +27,8 @@ def generate_feedback(guess, solution):
 
 
 def feedback_to_logic(guess, feedback):
+    # Used for translating the feedback for a given guess into the logical statements,
+    # that can be added to the belief base.
     guess = guess.split('&')
     Gs = list(itertools.permutations(list(range(1, len(guess)+1)), r=feedback.count('g')))
     outer = []
@@ -75,53 +81,20 @@ def feedback_to_logic(guess, feedback):
     return '|'.join(outer)
 
 
-def simplify_feedback(feedback):
-    parts = divide_sentence(feedback)
-    new_parts = []
-    for part in parts:
-        if part == '|':
-            continue
-        clauses = [x for x in divide_sentence(simplify(part)) if x != '&']
-        literals = clauses[:-1]
-        phis = divide_sentence(simplify(clauses[-1]))
-        new_phis = []
-        for phi in phis:
-            if phi == '|':
-                continue
-            new_phi = []
-            x = divide_sentence(phi)
-            for w in x:
-                new_w = []
-                if w == '&':
-                    continue
-                if '|' in w:
-                    for atom in divide_sentence(w):
-                        if atom == '|':
-                            continue
-                        elif atom in literals:
-                            break
-                        elif move_negation('-'+atom) in literals:
-                            continue
-                        else:
-                            new_w.append(atom)
-                    if new_w != '':
-                        new_phi.append('('+'|'.join(new_w)+')')
-                elif w in literals:
-                    continue
-                elif move_negation('-' + w) in literals:
-                    new_phi = []
-                    break
-                else:
-                    new_phi.append(w)
-            if new_phi != '':
-                temp = simplify('&'.join(new_phi))
-                if not is_false(temp):
-                    new_phis.append('('+remove_duplicates_and(temp)+')')
-        if new_phis != '':
-            new_parts.append('(('+'&'.join(literals)+')&('+'|'.join(new_phis)+'))')
-    return '|'.join(new_parts)
-
-
-def remove_duplicates_and(sentence):
-    parts = ['('+part+')' for part in divide_sentence(sentence) if part != '&']
-    return '&'.join(list(set(parts)))
+def generate_rules(colors, fields):
+    # generate_rules(colors, fields): Function to generate rules in the form of logical sentences to be added
+    # to the belief base given list of colors and number of fields in the game.
+    rules = []
+    for i in range(1, fields+1):
+        rules.append('|'.join(list(map('_'.join, list(itertools.product(*[colors, [str(i)]]))))))
+        rule = ''
+        if len(colors) == 2:
+            rule += '-'+colors[0]+'_'+str(i)+'|-'+colors[1]+'_'+str(i)
+            rules.append(rule)
+        else:
+            for j in range(len(colors)):
+                temp = list(map('_'.join, list(itertools.product(*[colors[:j] + colors[j+1:], [str(i)]]))))
+                temp = ['-' + x for x in temp]
+                rule += '&(' + '|'.join(temp) + ')'
+            rules.append(rule[1:])
+    return rules

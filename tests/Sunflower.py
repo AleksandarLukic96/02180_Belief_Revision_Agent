@@ -1,3 +1,7 @@
+"""
+Test with flower variation of mastermind game from exercise session week 10
+"""
+
 from Belief_base import belief_base
 import itertools
 
@@ -19,8 +23,9 @@ guesses = list(itertools.product(*pos))
 new_guesses = []
 
 for guess in guesses:
+    # Check all possible guesses
     if base.satisfiable('&'.join(guess)):
         new_guesses.append(guess)
-print(new_guesses)
+print(new_guesses)  # Only the correct guess should be possible
 
 

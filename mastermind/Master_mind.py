@@ -1,57 +1,54 @@
+"""
+Script for automatic Mastermind playing using belief base for timing and finding number of guesses needed.
+"""
 from Belief_base import belief_base
 import itertools
 import random
-from Feedback import generate_feedback, feedback_to_logic
+from Feedback import *
+import time
 
 
-solution = ['r', 'r', 'g']
+t1 = time.time_ns()
+solution = ['r', 'b', 'g', 'p']
+colors = ['r', 'g', 'y', 'b', 'w', 'p'] # Possible colors
 
-colors=['r', 'g', 'y']
 fields = len(solution)
 
-rules = []
-for i in range(1, fields+1):
-    rules.append('|'.join(list(map('_'.join, list(itertools.product(*[colors, [str(i)]]))))))
-    rule = ''
-    # TODO: handle only two colors
-    for j in range(len(colors)):
-        temp = list(map('_'.join, list(itertools.product(*[colors[:j] + colors[j+1:], [str(i)]]))))
-        temp = ['-' + x for x in temp]
-        rule += '&(' + '|'.join(temp) + ')'
-    rules.append(rule[1:])
+rules = generate_rules(colors, fields)
 
-suc = 0
-N = 100
+N = 10  # Number of games to play
 nGuesses = []
 for i in range(N):
     base = belief_base()
-
     for rule in rules:
         base.add(rule, 100)
-    print(f'{i/N*100:.0f} % complete.')
+
+    print(f'{i / N * 100:.0f} % complete.')
+    # Generate all possible guesses
     pos = [[colors[i] + '_' + str(j) for i in range(len(colors))] for j in range(1, fields + 1)]
     guesses = list(itertools.product(*pos))
+
     nGuess = 0
-    random.shuffle(guesses)
+    random.shuffle(guesses)  # Ensure random guessing
     while len(guesses) > 0:
+        # While a guess is possible
         guess = guesses[0]
         del guesses[0]
         guess = '&'.join(guess)
-
         if base.satisfiable(guess):
+            # If the guess is possible given the known information, make the guess
             feedback = generate_feedback(guess, solution)
             nGuess += 1
             print(nGuess)
             if feedback == 'g' * len(solution):
-                suc += 1
+                # If the guess is correct, stop game
                 nGuesses.append(nGuess)
                 break
+            # Transform feedback to logic and add it to the belief base
             logic_feedback = feedback_to_logic(guess, feedback)
             base.add(logic_feedback, 50)
-    assert(feedback == 'g'*len(solution))
-print('Success rate:')
-print(suc/N)
-print('Average number of guesses: {}'.format(sum(nGuesses)/suc))
+    assert (feedback == 'g' * len(solution)) # Assert correct solution is found
+print('Average number of guesses: {}'.format(sum(nGuesses) / N))
 print('Maximum number of guesses: {}'.format(max(nGuesses)))
-
-
+print('Average time per game [s]:')
+print((time.time_ns()-t1)/(N*1e9))
