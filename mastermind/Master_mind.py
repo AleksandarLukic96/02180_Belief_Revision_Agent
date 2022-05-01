@@ -1,3 +1,7 @@
+import sys  
+# setting path
+sys.path.append('../02180_BELIEF_REVISION_AGENT')
+
 """
 Script for automatic Mastermind playing using belief base for timing and finding number of guesses needed.
 """
