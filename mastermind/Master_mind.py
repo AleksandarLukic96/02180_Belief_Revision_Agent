@@ -13,16 +13,18 @@ import time
 
 
 t1 = time.time_ns()
-solution = ['r', 'b', 'g', 'p']
 colors = ['r', 'g', 'y', 'b', 'w', 'p'] # Possible colors
 
-fields = len(solution)
+fields = 4
 
 rules = generate_rules(colors, fields)
 
-N = 10  # Number of games to play
+N = 25  # Number of games to play
 nGuesses = []
 for i in range(N):
+    solution = []
+    for _ in range(4):
+        solution.append(colors[random.randint(0,5)])
     base = belief_base()
     for rule in rules:
         base.add(rule, 100)
