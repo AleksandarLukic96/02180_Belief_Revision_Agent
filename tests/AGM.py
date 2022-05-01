@@ -36,43 +36,55 @@ def inclusion(b_b, sentence):
 
 def vacuity(b_b, sentence):
     print(f'Is the negated sentence -({sentence}) entailed from the belief base?')
-    print(b_b.entails('-(' + sentence + ')'))
-    belief_base_add = b_b.copy()
-    print('Perform revision and expansion seperately')
-    b_b.revision(sentence, 100)
-    belief_base_add.add(sentence, 100)
-    print('Are the resulting belief bases equal?')
-    if b_b.CNF == belief_base_add.CNF:
-        print('True. Vacuity is satisfied')
+    check = b_b.entails('-(' + sentence + ')')
+    print(check)
+    if not check:
+        belief_base_add = b_b.copy()
+        print('Perform revision and expansion seperately')
+        b_b.revision(sentence, 100)
+        belief_base_add.add(sentence, 100)
+        print('Are the resulting belief bases equal?')
+        if b_b.CNF == belief_base_add.CNF:
+            print('True. Vacuity is satisfied')
+        else:
+            print('False. Vacuity is NOT satisfied')
     else:
-        print('False. Vacuity is NOT satisfied')
+        print('The negated sentence is entailed. Vacuity cannot be shown using this.')
 
 
 def consistency(b_b, sentence):
     print(f'Is sentence {sentence} consistent?')
-    print(satisfiable([], sentence))
-    print(f'Performs revision with sentence {sentence}.')
-    b_b.revision(sentence, 100)
-    print('Is the revised belief base consistent?')
-    check = b_b.satisfiable(b_b.CNF[0][0])
+    check = satisfiable([], sentence)
+    print(check)
     if check:
-        print('True. Consistency is satisfied.')
+        print(f'Performs revision with sentence {sentence}.')
+        b_b.revision(sentence, 100)
+        print('Is the revised belief base consistent?')
+        check = b_b.satisfiable(b_b.CNF[0][0])
+        if check:
+            print('True. Consistency is satisfied.')
+        else:
+            print('False. Consistency is NOT satisfied.')
     else:
-        print('False. Consistency is NOT satisfied.')
+        print('The sentence is not consistent. Consistency cannot be shown using this.')
 
 def extensionality(b_b, sentence):
     print('Is sentence a tautology?')
-    print(entails([], sentence))
-    sentence = sentence.split('<->')
-    b_b2 = b_b.copy()
-    print('Performs revisions seperately.')
-    b_b.revision(sentence[0], 100)
-    b_b2.revision(sentence[1], 100)
-    print('Are the resulting belief bases equal?')
-    if b_b.CNF == b_b2.CNF:
-        print('True. Extensionality is satisfied')
+    check = entails([], sentence)
+    print(check)
+    if check:
+        sentence = sentence.split('<->')
+        b_b2 = b_b.copy()
+        print('Performs revisions seperately.')
+        b_b.revision(sentence[0], 100)
+        b_b2.revision(sentence[1], 100)
+        print('Are the resulting belief bases equal?')
+        if b_b.CNF == b_b2.CNF:
+            print('True. Extensionality is satisfied')
+        else:
+            print('False. Extensionality is NOT satisfied')
     else:
-        print('False. Extensionality is NOT satisfied')
+        print('The sentence is not a tautology. Extensionality cannot be shown using this.')
 
 
 # Test cases found by inserting logical formulas in WolframAlpha using BooleanConvert[..., 'CNF']
