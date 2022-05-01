@@ -93,3 +93,8 @@ class belief_base:
         self.contract('-('+sentence+')')
         self.add(sentence, score)
 
+    def copy(self):
+        new = belief_base()
+        new.base = self.base.copy()
+        new.CNF = self.CNF.copy()
+        return new
