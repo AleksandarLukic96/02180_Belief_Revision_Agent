@@ -29,16 +29,13 @@ class belief_base:
         sentence = simplify(sentence)
         CNF = to_CNF(sentence)
         new_CNF = []
-        if DPLL_satisfiable([x[i] for x in self.CNF for i in range(len(x))], CNF):
-            # If the sentence is satisfiable in the belief base, add it to the belief base
-            self.base.append([sentence, score])
-            for i in range(len(CNF)):
-                if not is_tautology(CNF[i]):
-                    # Check that the CNF clause is not a tautology, and reduce it before adding
-                    new_CNF.append(remove_duplicates_or(CNF[i]))
-            self.CNF.append(new_CNF)
-        else:
-            print('Sentence {} is incompatible with what is in the belief base'.format(sentence))
+        self.base.append([sentence, score])
+        for i in range(len(CNF)):
+            if not is_tautology(CNF[i]):
+                # Check that the CNF clause is not a tautology, and reduce it before adding
+                new_CNF.append(remove_duplicates_or(CNF[i]))
+        self.CNF.append(new_CNF)
+
 
     def satisfiable(self, sentence):
         # Function for checking if a sentence is satisfiable given the current beliefs
