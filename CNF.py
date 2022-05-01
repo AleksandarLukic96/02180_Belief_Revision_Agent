@@ -15,7 +15,7 @@ import itertools
 
 def to_CNF(sentence):
     # Function for converting a sentence into conjunctive normal form, returning a list of the clauses in the CNF
-    # The CNF is contructed by first eliminating biimplications, replacing them with implications.
+    # The CNF is constructed by first eliminating bi-implications, replacing them with implications.
     # Then implications are removed, then negations are moved so as to only appear with symbols.
     # At last and is distributed over or to make the sentence a conjunction of disjunctions. Returns a list with the
     # conjunctions
@@ -206,4 +206,7 @@ def distribute(sentence):
         del x[1]
         del x[1]
     # Return list of clauses
-    return ['('+simplify(part)+')' for part in divide_sentence(x[0]) if part !='&']
+    if x[0] != '':
+        return ['('+simplify(part)+')' for part in divide_sentence(x[0]) if part !='&']
+    else:
+        return x[0]

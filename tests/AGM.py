@@ -22,7 +22,7 @@ def success(belief_base, sentence):
 
 
 def inclusion(b_b, sentence):
-    print('Is the sentence satisfiable in the belief base?')
+    print(f'Is the sentence {sentence} satisfiable in the belief base?')
     print(b_b.satisfiable(sentence))
     belief_base_add = b_b.copy()
     print('Perform revision and expansion seperately')
@@ -117,7 +117,7 @@ inclusion(x, '-p&q')
 print('\n Vacuity:\n')
 vacuity(x, '-(w|s)')
 print('\n Consistency:\n')
-consistency(x, '(P&Q)|(P->Q)')
+consistency(x, '(w|s)')
 print('\n Extensionality:\n')
 extensionality(x, '(a->b)<->(-a|b)')
 
