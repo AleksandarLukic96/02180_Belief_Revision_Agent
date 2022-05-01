@@ -1,11 +1,10 @@
 from Belief_base import *
-from utils import *
+from mastermind.User_playing_master_mind import play_master_mind
 
 def error(user_input):
     print(f"No match for: \"{user_input}\"")
 
 if __name__ == "__main__":
-
     print("Program start")
     print("Type \'exit\' to exit")
     print("Type \'CREATE {NAME}\' to create a belief base with name {NAME}")
@@ -21,9 +20,8 @@ if __name__ == "__main__":
         "Type \'SATISFIES {NAME} {SENTENCE}\' to check wether the belief base with name {NAME} satisfies the sentence {SENTENCE}")
 
     print(
-        "\nType \'MASTER MIND {COLORS} {PATTERN LENGTH}\' to play master mind with {COLORS} different colors and pattern length of {PATTERN LENGTH}")
+        "\nType \'MASTER MIND\' to play master mind with 6 different colors and pattern length of 4")
 
-    #priority_weight = 1
     while True:
         user_input = input("Your input: ")
 
@@ -95,8 +93,7 @@ if __name__ == "__main__":
                 error(user_input)
 
         elif user_input.upper() == "MASTER MIND":
-            print("Not yet implemented")
-            # TODO Implement
+            play_master_mind()
 
         else:
             error(user_input)
