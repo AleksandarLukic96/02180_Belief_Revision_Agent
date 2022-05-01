@@ -1,3 +1,7 @@
+import sys
+# setting path
+sys.path.append('../02180_BELIEF_REVISION_AGENT')
+
 from Belief_base import belief_base
 from utils import divide_sentence
 

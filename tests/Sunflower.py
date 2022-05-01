@@ -1,3 +1,7 @@
+import sys
+# setting path
+sys.path.append('../02180_BELIEF_REVISION_AGENT')
+
 """
 Test with flower variation of mastermind game from exercise session week 10
 """
