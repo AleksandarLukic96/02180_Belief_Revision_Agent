@@ -46,12 +46,17 @@ These test cases are made to show how the belief base are translated into CNF.
 The CNF form is neccesary to execute the DPLL algorithm.
 
 ## **/mastermind**
+This subfolder holds the implementation for the game Master Mind. 
+When running the _main.py_-file, the user can choose to play the game against the implemented AI.
 
 ### **Feedback.py**
+For the AI to be able to make qualified guesses, the _Feedback.py_-file implements the rules, how the AI reads the feedback logically as sentences which are then stored in the AIs belief base. Using the belief base the AI can then determine its next guess.  
 
 ### **Master_mind.py**
+This file runs a set number of Master Mind games in which the AI has to guess the correct answer from a randomly generated pattern. The average playing time and guesses used are then printed in the terminal by the end.
 
 ### **User_playing_master_mind.py**
+This file implements the Master Mind game, where the AI tries to guess the player's pattern. If the AI guesses correctly and the player answers with all green pins, "g g g g", the game simply stops. 
 
 ## **main.py**
 
